@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Getting Started with JavaScript OOP</title>
+  <link rel="stylesheet" href="prism.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1> Getting Started with JavaScript Object-Oriented Programming </h1>
+
+  <h2> Node.js Basics </h2>
+
+  <p>
+    Before doing this tutorial you will need to have Node.js installed. Once installed you can run any program on your computer written in JavaScript using the node command in the terminal. So if you call this program main.js then you can run it on the command line with the command:
+  </p>
+  <div class='sub-section indent'>
+    node main.js
+  </div>
+
+  <h2> JavaScript OOP Basics </h2>
+
+  <p>
+    Unlike most Object-Oriented languages, JavaScript doesn’t use classes to create objects. JavaScript instead works with a system called Prototypes.
+  </p>
+
+  <p>
+    In JavaScript objects are simply a data structure made up of key-value pairs. A blueprint for an object can be made by using a function that acts as a constructor function for the objects. You can also create an object literal that will result in a single object that you can’t duplicate.
+  </p>
+
+
+
+
+
+
+  <h2> Literal Objects: </h2>
+
+  <p>
+    To create a literal object you simply make a variable that holds a group of comma separated key-value pairs, also called a hash, in which the keys are the names that refer to the values. Each key-value pair is a property of the object. Values can be data or functions.
+  </p>
+
+  <p>
+    Example:
+  </p>
+  <pre><code class="language-javascript">
+var Person = {
+  name: “todd”,
+  age: 31,
+  gender: “male”,
+  runner: true
+}
+  </code></pre>
+
+  <p>
+    The above is an object literal that has 4 properties: name, age, gender, and runner. Notice you use colons instead of equal signs to assign values to the keys.
+  </p>
+
+  <p>
+    An object literal is just a single object, you can’t make more versions of this object like you can in other languages when you make a class and create object instances of that class. To do that in JavaScript you need to create a constructor function that acts as a blueprint to create one or more instances of that object type.
+  </p>
+
+
+
+  <h2> Constructor-created Objects: </h2>
+
+  <p>
+    To create a function that acts as a constructor for an object we make assignments to the function using the “this” keyword. Anything you want to pass to the constructor you put as arguments to the function. Whereas above we created a literal object called Person that can’t be duplicated to create multiple Person’s, now we will create a constructor function that will allow us to create as many Person objects as we want.
+  </p>
+
+  <pre><code class="language-javascript">
+function Person(name, age, gender, runner) {
+  this.name = name;
+  this.age = age;
+  this.gender = gender;
+  this.runner = runner;
+}
+  </code></pre>
+
+  <p>
+    Now we can create multiple instances of Person:
+  </p>
+
+  <pre><code class="language-javascript">
+var todd = Person(“todd”, 31, “male”, true);
+var joe = Person(“joe”, 21, “male”, false);
+var julia = Person(“julia”, 29, “female”, true);
+  </code></pre>
+
+
+
+
+
+
+  <h2> Public and Private Properties: </h2>
+
+  <p>
+    In object literals every property of the object is public, and can therefore be accessed directly. But when an object blueprint is created using a constructor function you can specify its properties as public or private.
+  </p>
+
+  <p>
+    Public means that the property can be directly accessed outside the object constructor using dot notation (syntax: objectName.propertyName). Private means that you have to create methods for the object that are used to access that property, whether the property is a private variable or private function. The reason you would want to use private properties in an object is so that you can define the interface for that object - to purposefully create the syntax by which properties of an object can be read or altered.
+  </p>
+
+  <p>
+    For example, if you have an object that represents a user and a variable in that object is their age, you might want to make it clear to other developers working on that project that the age should never be altered. You can accomplish this by writing a function in the object that increments the age only on that person’s birthday each year, calling the function birthday(). Both the age property and the birthday() property of that function should be private so they cannot be altered from outside the object. You would then create a public method in the object called getAge() in order to retrieve the age of the user. By creating the object in this way you clearly specify the interface by which the age can be accessed, which is read-only. We will do this later in the tutorial.
+  </p>
+
+  <p>
+    There are basically four different ways to create properties for a constructor function, shown below. Basically, using the var keyword makes a property of the constructor function private, while using 'this.' syntax makes it public.
+  </p>
+
+  <p>
+    Creating class properties inside an object:
+  </p>
+
+  <div class="sub-section">
+    PUBLIC VARIABLE:
+    <pre><code class="language-javascript">this.myVar = value;</code></pre>
+    PUBLIC FUNCTION:
+    <pre><code class="language-javascript">this.myFunc = function() { /* code… */ };</code></pre>
+
+    PRIVATE VARIABLE:
+    <pre><code class="language-javascript">var myVar = value;</code></pre>
+    PRIVATE FUNCTION:
+    <pre><code class="language-javascript">var myFunc = function() { /* code… */ };</code></pre>
+  </div>
+
+  <p>
+    You can also create properties of a class outside an object constructor (all public):
+  </p>
+
+  <pre><code class="language-javascript">
+className.prototype.myVar = value;
+className.prototype.myFunc = function() { // code… };
+  </code></pre>
+
+  <p>
+    Creating static class properties that are properties of the entire class rather than instances of that class:
+  </p>
+
+  <pre><code class="language-javascript">
+className.myVar = value;
+  </code></pre>
+
+  <p>
+    You can also create new properties on a specific instance (object) created from a constructor function. There are two different syntaxes you can use to do this and they differ in functionality. The two syntaxes are:
+  </p>
+
+  <pre><code class="language-javascript">
+objName.propertyName = value;
+objName[propertyName] = value;
+  </code></pre>
+
+  <p>
+    Objects are just groups of key-value pairs, in the syntax above the propertyName is the new key in the object and the value is its value. When you use dot notation what you actually type for the propertyName will be the key name in the object. However, using the square brackets syntax, the thing inside the square brackets will be evaluated by JavaScript and then the resulting value will be set as the new key in the object. If you put a string into the square brackets then what is inside that string will be the newly created key, however if you put a variable into the square brackets then the value of that variable will be the new key. If you put a number into the square brackets with no quotes around it JavaScript will convert it into a string and name the key as that string, i.e. 4 will become “4”. If you put text in the square brackets that isn’t inside quotes or isn’t the name of a variable that has been created then it will create an error because its value is undefined. Below are a few examples.
+  </p>
+
+  <p>
+    Assume an object named “bob”:
+  </p>
+
+  <pre><code class="language-javascript">
+bob.age = 30;       // this property will be added to the bob object:        age: 30
+
+bob[“age”] = 30;        // this property will be added to the bob object:        age: 30
+
+var blah = “age”;<br>
+bob[blah] = 30;       // this property will be added to the bob object:        age: 30
+bob.blah = 30;        // this property will be added to the bob object:        blah: 30
+
+bob[4] = 30;          // this property will be added to the bob object:        ‘4’: 30
+
+var blah = function() { return “age”; };
+bob[age] = 30;        // this property will be added to the bob object:        ‘function () { return “age”; }’: 30
+
+var blah = function() { return “age”; }();  // The final () makes this an IFFE (Immediately Invoked Function Expression)
+bob[blah] = 30;       // this property will be added to the bob object:        age : 30
+
+function blah() { return “age”; };
+bob[blah] = 30;       // this property will be added to the bob object:        ‘function blah() { return “age”; }’: 30
+
+function blah() { return “age”; }();    // syntax error, you can’t do an IFFE on a function declared in this way.
+bob[blah] = 30;       // won’t do anything because the program already broke on the last line.
+  </code></pre>
+
+  <p>
+    As can be seen from the above examples, when you want to add on properties to objects after the object has already been created you want to either use dot notation with the name of the key, or if you want to dynamically create a key in the object from the value of a variable you use the square bracket notation which will set that key as the value of the variable.
+  </p>
+
+
+
+
+
+  <h2> Creating a Program to Explore Objects and Their Properties </h2>
+
+  <h3> Object-literal practice: </h3>
+  <p>
+    This will just create a single instance of an object without making a blueprint of the object from a constructor function. Our object’s name is Pedro and Pedro has two properties, both variables, called name and age.
+  </p>
+
+  <pre><code class="language-javascript">
+var Pedro = {
+  name: "pedro",
+  age: 22
+};
+
+console.log(Pedro);
+  </code></pre>
+
+  <p>
+    Pedro looks like this when we print it to the terminal with console.log():
+    <pre><code class="language-javascript">
+{ name: 'pedro', age: 22 }
+    </code></pre>
+  </p>
+
+  <p>
+    Using the dot notation of adding a property to an object instance:
+  </p>
+
+  <pre><code class="language-javascript">
+Pedro.color = "orange";
+console.log(Pedro);
+  </code></pre>
+
+  <p>  
+    Pedro printed to the terminal looks like:
+  </p>
+
+  <pre><code class="language-javascript">
+{ name: 'pedro', age: 22, color: 'orange' }
+  </code></pre>
+
+  <p>
+    If we try:
+  </p>
+
+  <pre><code class="language-javascript">
+Pedro[hobby] = "cartwheels";
+  </code></pre>
+
+  <p>
+    We get an error because hobby has not been created as a variable. However if we type:
+  </p>
+
+  <pre><code class="language-javascript">
+Pedro["hobby"] = "cartwheels";
+console.log(Pedro);
+  </code></pre>
+
+  <p>Pedro looks like this, with the hobby property added:
+  </p>
+
+  <pre><code class="language-javascript">
+{ name: 'pedro', age: 22, color: 'orange', hobby: 'cartwheels' }
+  </code></pre>
+
+  <p>
+    Putting a variable into brackets to create a new key will make the variable’s value the key:
+  </p>
+
+  <pre><code class="language-javascript">
+var skill = "baseball";
+Pedro[skill] = "8/10";
+console.log(Pedro);
+  </code></pre>
+
+  <p>
+    So Pedro is now:
+  </p>
+
+  <pre><code class="language-javascript">
+{ name: 'pedro',
+  age: 22,
+  color: 'orange',
+  hobby: 'cartwheels',
+  baseball: '8/10' }
+  </code></pre>
+
+  <br><br>
+  <h3> Object creation through a constructor function: </h3>
+
+  <p>
+    We’re now going to create the blueprint for a Person object so we can create as many Person object instances as we want.
+  </p>
+
+  <pre><code class="language-javascript">
+function Person(name, age, colorArg, hobbyArg) {
+  this.name = name;             // PUBLIC
+  this.age = age;               // PUBLIC
+  var color = colorArg;         // PRIVATE
+  var hobby = hobbyArg;         // PRIVATE
+  this.getColor = function() { return color; };             // PUBLIC
+  var getHobby = function() { return hobby; };              // PRIVATE
+  this.hobbyGreeting = function() { return "My fav hobby is " + getHobby(); };  // PUBLIC
+  var id = function() { return Person.userNum++; }();       // PRIVATE
+  this.getID = function() { return id; };                   // PUBLIC
+}
+  </code></pre>
+
+  <p>
+    Here we created an object constructor that has a mix of public and private properties. If we were to console.log() an instance of this object constructor right now we would only see the public properties: name, age, getColor(), hobbyGreeting() and getID().
+  </p>
+
+  <p>
+    Since color and hobby are private we had to create accessor methods getColor() and getHobby() in order to allow those properties to be used outside of the constructor. But we actually made getHobby() a private method so we then had to make a public method called hobbyGreeting(), which calls getHobby(), in order to access the hobby property.
+  </p>
+
+  <p>
+    Finally we have a private id() method which returns an object property called Person.userNum and then increments it. We also created a public function called getID() which calls the id() method so that we can use it outside of the constructor. Notice that id() has parentheses at the end of the line which is called an IFFE and it means that function is immediately invoked, or called. The IFFE immediately runs the function when the Person constructor is used to create an object, so the value the function returns is saved into the private id property which is then accessed through the public getID() method.
+  </p>
+
+  <pre><code class="language-javascript">
+Person.userNum = 0;         // Static Property
+  </code></pre>
+
+  <p>
+    The userNum property, as a static variable, holds the same value for every object that has been created by the Person constructor. In fact userNum is just a single variable shared across all objects that were created by Person. The reason we used an IFFE in the function on the id property is so that we could assign the current value of Person.userNum to each object as it is created and then increment it for use with the next object created. So Person.userNum keeps going up and always represents the id of the next object that will be created, but each object saves its own id from Person.userNum as it is created by using that IFFE during object construction.
+  </p>
+
+  <p>
+    Now we’ll create three objects:
+  </p>
+
+  <pre><code class="language-javascript">
+var todd = new Person('Todd', 31, 'blue', 'coding');
+var deep = new Person('Deep', 20, 'red', 'video games');
+var joe = new Person('Joe', 22, 'purple', 'board games');
+  </code></pre>
+
+  <p>
+    We’ve got our three objects, now let's use the prototype syntax to add two properties, a method and a variable, to the Person type so that they are applied to all the instances of Person we've created.
+  </p>
+
+  <pre><code class="language-javascript">
+// Person.prototype.concatName_Color = function() { return todd.name + todd.getColor(); };  <-- doesn't work because getColor() is private
+Person.prototype.concatName_Age = function() { return this.name + this.age; };
+Person.prototype.sport = "";
+  </code></pre>
+
+  <p>
+    Note the first line we commented out, it will cause an error because it uses the getColor() method which is private and therefore cannot be directly accessed from outside the constructor. We left the sport property blank because if we gave it a value that value would be applied to all our objects, instead we want to now assign values for sport to each of our objects.
+  </p>
+
+  <pre><code class="language-javascript">
+todd.sport = "Track and Field";
+deep.sport = "Pool";
+joe.sport = "Basketball";
+  </code></pre>
+
+  <p>
+    Let’s write a bunch of console.log statements to see what we’ve created:
+  </p>
+
+  <pre><code class="language-javascript">
+console.log("names: " + todd.name + ", " + deep.name + ", " + joe.name);
+console.log("todd's color: " + todd.getColor());
+//console.log(todd.getHobby());   <-- doesn't work because getColor() is private
+console.log("todd's concatName_Age(): " + todd.concatName_Age());
+console.log("deep's concatName_Age(): " + deep.concatName_Age());
+console.log("todd's sport: " + todd.sport);
+console.log("deep's sport: " + deep.sport);
+console.log("joe's sport: " + joe.sport);
+console.log("todd's hobbyGreeting(): " + todd.hobbyGreeting());      // called object's public method which calls object's private method
+console.log("Todd's ID: " + todd.getID());
+console.log("Deep's ID: " + deep.getID());
+console.log("Joe's ID: " + joe.getID());
+  </code></pre>
+
+  <p>
+    Line by line:
+  </p>
+
+  <div class="indent">
+    <ol>
+      <li>
+        We can access the name of all our objects because name is a public property.
+      </li>
+      <li>
+        We can access our private color property by using our public getColor() method.
+      </li>
+      <li>
+        I’ve commented out todd.getHobby() because it causes an error since the getHobby() method is private and therefore we can’t access it directly.
+      </li>
+      <li>
+        We used the concatName_Age method which we created using the prototype syntax. This gives us the todd object’s name and age, both of which have public scope and we directly access in concatName_Age.
+      </li>
+      <li>
+        Same as the previous line but called on the deep object.
+      </li>
+      <li>
+        Since we created the sport property with the prototype syntax it is public and so we can directly access it from the todd object.
+      </li>
+      <li>
+        Same as last line but using the deep object.
+      </li>
+      <li>
+        Same as last line but using the joe object.
+      </li>
+      <li>
+        Here we call the public hobbyGreeting() method on the todd object. This method accesses the private getHobby() method, which accesses the private hobby property. Calling the hobbyGreeting() method is therefore the only way we can access the hobby property from outside the constructor.
+      </li>
+      <li>
+        In order to show that using the IFFE in the id property’s function correctly saved the current id to each object at their time of creation we are printing out the todd object’s private id using the public getID() method. The id is 0.
+      </li>
+      <li>
+        Same as above line but for the deep object. The id is 1.
+      </li>
+      <li>
+        Same as above but for the joe object. The id is 2.
+      </li>
+    </ol>
+  </div>
+
+  <p>
+    Here are the results of all those console.log statements:
+  </p>
+
+  <pre><code class="language-javascript">
+names: Todd, Deep, Joe
+todd's color: blue
+todd's concatName_Age(): Todd31
+deep's concatName_Age(): Deep20
+todd's sport: Track and Field
+deep's sport: Pool
+joe's sport: Basketball
+todd's hobbyGreeting(): My fav hobby is coding
+Todd's ID: 0
+Deep's ID: 1
+Joe's ID: 2
+  </code></pre>
+
+  <p>
+    We have already covered the object.property and object[“property”] and object[variable] syntax above with the Pedro object literal. Read through the code below and add it to your program. Make sure you understand the output and how it works.
+  </p>
+
+  <pre><code class="language-javascript">
+todd.height = "5'11";
+console.log("todd's height: " + todd.height);
+console.log("joe's height: " + joe.height);     // undefined because height property was only added to todd object
+
+joe[job] = "student";
+console.log("joe's first try at a job: " + joe.job);
+joe["job"] = "Intern";
+console.log("joe's second try at a job: " + joe.job);
+var job = "occupation";
+joe.job = "web developer";
+todd[job] = "teaching assistant";
+console.log("joe's third try at a job: " + joe.job);
+console.log("todd's job: " + todd.job);                 // undefined because job is not a property of the todd object
+console.log("todd's occupation: " + todd.occupation);
+console.log("joe's occupation: " + joe.occupation);     // undefined because occupation is not a property of the joe object
+  </code></pre>
+
+  <p>
+    The result of those console.log statements are:
+  </p>
+
+  <pre><code class="language-javascript">
+todd's height: 5'11
+joe's height: undefined
+joe's first try at a job: undefined
+joe's second try at a job: Intern
+joe's third try at a job: web developer
+todd's job: undefined
+todd's occupation: teaching assistant
+joe's occupation: undefined
+  </code></pre>
+
+  <p>
+    Finally we print out the todd and deep object to show you all the publicly available properties on our objects after all this code has run:
+  </p>
+
+  <pre><code class="language-javascript">
+console.log(todd);
+console.log(deep);
+  </code></pre>
+
+  <p>
+    Our final deep and todd objects are:
+  </p>
+
+  <pre><code class="language-javascript">
+{ name: 'Todd',
+  age: 31,
+  getColor: [Function],
+  hobbyGreeting: [Function],
+  getID: [Function],
+  sport: 'Track and Field',
+  height: '5\'11',
+  occupation: 'teaching assistant' }
+{ name: 'Deep',
+  age: 20,
+  getColor: [Function],
+  hobbyGreeting: [Function],
+  getID: [Function],
+  sport: 'Pool' }
+  </code></pre>
+
+  <p>
+    Read through the code, type the code into a file and run it with node on the command line to test it out and play around with changing things to get a full understanding of how to use Objects in JavaScript.
+  </p>
+
+  <p>
+    <a href="https://github.com/theCodeBear/JS-OOP-Tutorial-Project">The final code is on GitHub here.</a>
+  </p>
+
+
+
+  <script src="prism.js"></script>
+</body>
+</html>
