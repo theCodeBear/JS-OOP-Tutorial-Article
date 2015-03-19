@@ -43,7 +43,7 @@
     Example:
   </p>
   <pre><code class="language-javascript">
-var Person = {
+var person = {
   name: “todd”,
   age: 31,
   gender: “male”,
@@ -81,13 +81,41 @@ function Person(name, age, gender, runner) {
   </p>
 
   <pre><code class="language-javascript">
-var todd = Person(“todd”, 31, “male”, true);
-var joe = Person(“joe”, 21, “male”, false);
-var julia = Person(“julia”, 29, “female”, true);
+var todd = new Person(“todd”, 31, “male”, true);
+var joe = new Person(“joe”, 21, “male”, false);
+var julia = new Person(“julia”, 29, “female”, true);
   </code></pre>
 
+  <p>
+    You might be wondering what happens when you don't give the correct number of arguments to the constructor function:
+  </p>
 
+  <pre><code class="language-javascript">
+var malcolm = new Person('Malcolm', 23);
+var jay = new Person('Jay', 55, 'male', false, 'extraArgument');
 
+console.log(malcolm.gender);    // prints: undefined
+console.log(malcolm.runner);    // prints: undefined
+  </code></pre>
+
+  <p>
+    Any arguments you don't include will be initialized as undefined. If you give the constructor function to many arguments the extra arguments just won't do anything. In the above example there is no way to access the 'extraArgument' string.
+  </p>
+
+  <p>
+    You can also set default values on your object properties in the constructor function in case the constructor isn't given all the arguments. Use the 'or' operator to do this.
+  </p>
+
+  <pre><code class='language-javascript'>
+function Cat(name, livesLeft, speak) {
+  this.name = name;
+  this.livesLeft = livesLeft || '9';    // if given no value, defaults to 9
+  this.speak = speak || 'snarf';        // if given no value, defaults to snarf
+}
+var kitty = new Cat('lilly');
+console.log(kitty.livesLeft);     // prints: 9
+console.log(kitty.speak);         // prints: snarf
+  </code></pre>
 
 
 
@@ -117,38 +145,59 @@ var julia = Person(“julia”, 29, “female”, true);
     PUBLIC VARIABLE:
     <pre><code class="language-javascript">this.myVar = value;</code></pre>
     PUBLIC FUNCTION:
-    <pre><code class="language-javascript">this.myFunc = function() { /* code… */ };</code></pre>
+    <pre><code class="language-javascript">this.myFunction = function() { /* code… */ };</code></pre>
 
     PRIVATE VARIABLE:
     <pre><code class="language-javascript">var myVar = value;</code></pre>
     PRIVATE FUNCTION:
-    <pre><code class="language-javascript">var myFunc = function() { /* code… */ };</code></pre>
+    <pre><code class="language-javascript">var myFunction = function() { /* code… */ };</code></pre>
   </div>
 
   <p>
-    You can also create properties of a class outside an object constructor (all public):
+    Note that JavaScript developer by convention denote that a property of an object is private by putting an underscore in front of the variable name. This doesn't actually make it private like when using the var keyword. Since it is a convention using the underscore will signify to anyone else working with your code that the underscored property should not be directly accessed and should only be accessed through the object's public functions. An example of denoting a property of an object as private is:
   </p>
 
-  <pre><code class="language-javascript">
-className.prototype.myVar = value;
-className.prototype.myFunc = function() { // code… };
+  <pre><code class='language-javascript'>
+this._name = 'Michael';
   </code></pre>
 
   <p>
-    Creating static class properties that are properties of the entire class rather than instances of that class:
+    You can also create properties of a class outside an object constructor using the prototype keyword (all public):
   </p>
 
   <pre><code class="language-javascript">
-className.myVar = value;
+function Dog() { this.name = 'Rex' };
+
+Dog.prototype.animalClass = 'Mammal';
+Dog.prototype.bark = function() { console.log('woof'); };
+
+var fido = new Dog();           // creates an instance of a Dog
+console.log(fido.name);         // prints: 'Rex'
+fido.bark();                    // prints: 'woof'
+console.log(fido.animalClass);  // prints: 'Mammal'
   </code></pre>
 
   <p>
-    You can also create new properties on a specific instance (object) created from a constructor function. There are two different syntaxes you can use to do this and they differ in functionality. The two syntaxes are:
+    Creating static class properties that are properties of the entire class rather than instances of that class. Since it is a property of the class you cannot access the property by using an instance of the class, only by using the class name itself:
   </p>
 
   <pre><code class="language-javascript">
-objName.propertyName = value;
-objName[propertyName] = value;
+Dog.earthling = true;
+
+console.log(Dog.earthling);     // prints: true
+console.log(fido.earthling);    // Will not work
+  </code></pre>
+
+  <p>
+    You can also create new properties on a specific instance (object) created from a constructor function. There are two different syntaxes you can use to do this and they differ in functionality:
+  </p>
+
+  <pre><code class="language-javascript">
+fido.favoriteFood = 'Bacon';
+fido['favoriteWeather'] = 'Snow';
+
+console.log(fido.favoriteFood);       // prints: 'Bacon'
+console.log(fido.favoriteWeather);    // prints: 'Snow'
   </code></pre>
 
   <p>
@@ -199,7 +248,7 @@ bob[blah] = 30;       // won’t do anything because the program already broke o
   </p>
 
   <pre><code class="language-javascript">
-var Pedro = {
+var pedro = {
   name: "pedro",
   age: 22
 };
@@ -219,8 +268,8 @@ console.log(Pedro);
   </p>
 
   <pre><code class="language-javascript">
-Pedro.color = "orange";
-console.log(Pedro);
+pedro.color = "orange";
+console.log(pedro);
   </code></pre>
 
   <p>  
@@ -236,7 +285,7 @@ console.log(Pedro);
   </p>
 
   <pre><code class="language-javascript">
-Pedro[hobby] = "cartwheels";
+pedro[hobby] = "cartwheels";
   </code></pre>
 
   <p>
@@ -244,8 +293,8 @@ Pedro[hobby] = "cartwheels";
   </p>
 
   <pre><code class="language-javascript">
-Pedro["hobby"] = "cartwheels";
-console.log(Pedro);
+pedro["hobby"] = "cartwheels";
+console.log(pedro);
   </code></pre>
 
   <p>Pedro looks like this, with the hobby property added:
@@ -261,8 +310,8 @@ console.log(Pedro);
 
   <pre><code class="language-javascript">
 var skill = "baseball";
-Pedro[skill] = "8/10";
-console.log(Pedro);
+pedro[skill] = "8/10";
+console.log(pedro);
   </code></pre>
 
   <p>
@@ -296,6 +345,8 @@ function Person(name, age, colorArg, hobbyArg) {
   var id = function() { return Person.userNum++; }();       // PRIVATE
   this.getID = function() { return id; };                   // PUBLIC
 }
+
+Person.userNum = 0;         // Static Property
   </code></pre>
 
   <p>
@@ -309,10 +360,6 @@ function Person(name, age, colorArg, hobbyArg) {
   <p>
     Finally we have a private id() method which returns an object property called Person.userNum and then increments it. We also created a public function called getID() which calls the id() method so that we can use it outside of the constructor. Notice that id() has parentheses at the end of the line which is called an IFFE and it means that function is immediately invoked, or called. The IFFE immediately runs the function when the Person constructor is used to create an object, so the value the function returns is saved into the private id property which is then accessed through the public getID() method.
   </p>
-
-  <pre><code class="language-javascript">
-Person.userNum = 0;         // Static Property
-  </code></pre>
 
   <p>
     The userNum property, as a static variable, holds the same value for every object that has been created by the Person constructor. In fact userNum is just a single variable shared across all objects that were created by Person. The reason we used an IFFE in the function on the id property is so that we could assign the current value of Person.userNum to each object as it is created and then increment it for use with the next object created. So Person.userNum keeps going up and always represents the id of the next object that will be created, but each object saves its own id from Person.userNum as it is created by using that IFFE during object construction.
@@ -334,7 +381,7 @@ var joe = new Person('Joe', 22, 'purple', 'board games');
 
   <pre><code class="language-javascript">
 // Person.prototype.concatName_Color = function() { return todd.name + todd.getColor(); };  <-- doesn't work because getColor() is private
-Person.prototype.concatName_Age = function() { return this.name + this.age; };
+Person.prototype.concatNameAge = function() { return this.name + this.age; };
 Person.prototype.sport = "";
   </code></pre>
 
@@ -435,7 +482,7 @@ Joe's ID: 2
   </p>
 
   <pre><code class="language-javascript">
-todd.height = "5'11";
+todd.height = "5 11";
 console.log("todd's height: " + todd.height);
 console.log("joe's height: " + joe.height);     // undefined because height property was only added to todd object
 
@@ -457,7 +504,7 @@ console.log("joe's occupation: " + joe.occupation);     // undefined because occ
   </p>
 
   <pre><code class="language-javascript">
-todd's height: 5'11
+todd's height: 5 11
 joe's height: undefined
 joe's first try at a job: undefined
 joe's second try at a job: Intern
@@ -487,7 +534,7 @@ console.log(deep);
   hobbyGreeting: [Function],
   getID: [Function],
   sport: 'Track and Field',
-  height: '5\'11',
+  height: '5 11',
   occupation: 'teaching assistant' }
 { name: 'Deep',
   age: 20,
