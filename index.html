@@ -220,7 +220,7 @@ bob.blah = 30;        // this property will be added to the bob object:        b
 bob[4] = 30;          // this property will be added to the bob object:        ‘4’: 30
 
 var blah = function() { return “age”; };
-bob[age] = 30;        // this property will be added to the bob object:        ‘function () { return “age”; }’: 30
+bob[blah] = 30;        // this property will be added to the bob object:        ‘function () { return “age”; }’: 30
 
 var blah = function() { return “age”; }();  // The final () makes this an IFFE (Immediately Invoked Function Expression)
 bob[blah] = 30;       // this property will be added to the bob object:        age : 30
